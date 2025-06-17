@@ -32,6 +32,7 @@ function decryptServiceAccount() {
     decipher.setAuthTag(tag);
     const decrypted = Buffer.concat([decipher.update(cipherText), decipher.final()]);
     log('decrypt', 'Decryption complete');
+    console.log(JSON.parse(decrypted.toString('utf8')))
     return JSON.parse(decrypted.toString('utf8'));
 }
 
