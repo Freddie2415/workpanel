@@ -254,6 +254,9 @@ function watch() {
         }
         CURRENT_CFG = data;
         maybeStart();
+    }, err => {                          //  ←  вот его и не хватает
+        log('cfg', 'kioskAuth listener ERROR', err.code, err.message);
+        gracefulExit(1, true);          //  или решайте иначе
     });
 
     INTERNAL_COLL.onSnapshot(async snap => {
@@ -265,7 +268,15 @@ function watch() {
         }
         CURRENT_INTERNAL = users;
         maybeStart();
+    }, err => {
+        log('cfg', 'internalUsers listener ERROR', err.code, err.message);
+        gracefulExit(1, true);
     });
+
+    // ~~► мгновенная проверка туда же
+    CONFIG_REF.get()
+        .then(d => log('cfg', 'Immediate kioskAuth.get()', d.exists ? d.data() : 'doc not found'))
+        .catch(e => log('cfg', 'kioskAuth.get() error', e.code, e.message));
 }
 
 function maybeStart() {
