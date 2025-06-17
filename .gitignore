@@ -3,3 +3,5 @@ user_data/
 .idea
 .env
 package-lock.json
+serviceAccount.json
+serviceAccount.enc
